@@ -32,10 +32,12 @@ public class AIcontrol : MonoBehaviour
     private int currentnode = 0;
     void Start()
     {
+        // get path object from scene
         path = GameObject.FindGameObjectWithTag("Path").GetComponent<Transform>();
 
-        Getspeed();
+        Getspeed(); // change speed according to level
 
+        // get all nodes in path and store them in nodes list
         Transform[] pathtransforms = path.GetComponentsInChildren<Transform>();
         nodes = new List<Transform>();
 
@@ -61,14 +63,18 @@ public class AIcontrol : MonoBehaviour
         {
             maxmotortorque = waluigimotortorque;
         }
+        else
+        {
+            maxmotortorque = waluigimotortorque;
+        }
     }
     private void FixedUpdate()
     {
-        ApplySteer();
-        Drive();
-        CheckWaypointDistance();
-        LerpSteerAngle();
-        RotateWheels();
+        ApplySteer(); // steer the wheel to next node
+        Drive(); // move the car
+        CheckWaypointDistance(); // check if distance between car and node is less than x then change to next node
+        LerpSteerAngle(); // smooth car turns
+        RotateWheels(); // rotate car mesh with wheel collider
     }
     private void ApplySteer()
     {
@@ -112,9 +118,9 @@ public class AIcontrol : MonoBehaviour
     }
     private void RotateWheels()
     {
-        FrontLMesh.Rotate(0, 0, FrontL.rpm / 60 * 360 * Time.deltaTime);
-        FrontRMesh.Rotate(0, 0, FrontR.rpm / 60 * 360 * Time.deltaTime);
-        BackLMesh.Rotate(0, 0, BackL.rpm / 60 * 360 * Time.deltaTime);
-        BackRMesh.Rotate(0, 0, BackR.rpm / 60 * 360 * Time.deltaTime);
+        FrontLMesh.Rotate(FrontL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
+        FrontRMesh.Rotate(FrontR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
+        BackLMesh.Rotate(BackL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
+        BackRMesh.Rotate(BackR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
     }
 }
